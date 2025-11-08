@@ -1,0 +1,5 @@
+apache-airflow[aws]==2.11.0
+apache-airflow-providers-amazon
+python-dotenv
+minio
+duckdb
