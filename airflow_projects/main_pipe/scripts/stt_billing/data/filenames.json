@@ -1,0 +1,7 @@
+{
+    "exists": [
+        "receipts/STT1.csv",
+        "receipts/STT2.csv"
+    ],
+    "inject": []
+}

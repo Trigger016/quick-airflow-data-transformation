@@ -14,7 +14,7 @@ def exists_filename(mode:str, client:Minio, json_filepath:str, bucket_properties
         prefix=bucket_properties['target_prefix']
     )
     working_list = [filename.object_name for filename in detected_filename 
-                    if filename.object_name.replace(bucket_properties['target_prefix'], '') not in existing
+                    if filename.object_name not in existing
                     and filename.object_name.replace(bucket_properties['target_prefix'], '') != '']
     
     if len(working_list) > 0:
@@ -29,7 +29,7 @@ def update_json(where:str, json_filepath:str, list_addition:list, mode:str=None)
         jsonfile = load(read_buffer)
             
         if mode:
-            jsonfile[where].append(list_addition)
+            jsonfile[where] = list_addition
         else:
             jsonfile[where].extend(list_addition)
             

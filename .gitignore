@@ -1,7 +1,5 @@
 .env
 __pycache__
-!airflow_projects/main_pipe/scripts/stt_billing_ingestion/data
-data/
 .venv/
 .vscode/
 jupyter/

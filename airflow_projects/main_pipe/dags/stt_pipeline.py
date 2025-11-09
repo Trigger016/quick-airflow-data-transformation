@@ -32,7 +32,7 @@ with dag:
     task_2 = PythonOperator(
         task_id='data-processing',
         python_callable=function.data_processing,
-        trigger_rule="all_success"
+        trigger_rule="all_done"
     )
     
     task_1 >> task_2

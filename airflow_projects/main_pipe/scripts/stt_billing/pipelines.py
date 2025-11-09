@@ -2,7 +2,7 @@ import duckdb
 from airflow.exceptions import AirflowSkipException
 from main_pipe.scripts.stt_billing.helper.files import exists_filename, update_json
 from main_pipe.scripts.stt_billing.helper.conn import minio_interface
-from airflow_projects.main_pipe.scripts.stt_billing.helper.query_interface import init, query_retriever
+from main_pipe.scripts.stt_billing.helper.query_interface import init, query_retriever
 from main_pipe.scripts.stt_billing.shared import variables as var
 
 
@@ -31,14 +31,20 @@ def data_processing():
     query_objects = query_retriever(client, var.SQL_BUCKET_NAME, var.QUERY)
     if not query_objects:
         update_json('inject', var.FILENAME_JSON_PATH, [], 'replace')
+        print('One of query file is empty, please check sqlfile storage or the process itself')
         raise AirflowSkipException
     
     create_query, clean_query, bad_query, inject_query = query_objects
     duckdb.sql(create_query)
-    # duckdb.sql(clean_query)
-    # duckdb.sql(bad_query)
-    # duckdb.sql(inject_query)
     
-    
-    
-    
+    for file in filelist:
+        try:
+            clean_query = clean_query.format(pattern=file)
+            bad_query = bad_query.format(pattern=file)
+            update_json('exists', var.FILENAME_JSON_PATH, [file])
+            print(f'{file} Injected.')
+        except Exception as refined_err:
+            print(refined_err, '|', file)
+            
+    duckdb.sql(inject_query)
+    update_json('inject', var.FILENAME_JSON_PATH, [], 'replace')

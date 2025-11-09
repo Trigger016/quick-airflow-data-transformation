@@ -15,11 +15,26 @@ def init(bucket_creds:dict, lakehouse_creds:dict) -> None:
         SECRET '{bucket_creds['access_secret']}',
         USE_SSL 'false'
     );
+    
+    CREATE OR REPLACE SECRET postgres_secret (
+    TYPE postgres,
+    HOST postgres,
+    PORT 5432,
+    USER '{lakehouse_creds['user']}',
+    PASSWORD '{lakehouse_creds['password']}'
+);
     ''')
     
     duckdb.sql(f'''
-    ATTACH 'dbname={lakehouse_creds['dbname']} user={lakehouse_creds['user']} password={lakehouse_creds['password']} host=postgres port=5432' AS refined (TYPE postgres, SCHEMA 'refined');
-    ATTACH 'dbname={lakehouse_creds['dbname']} user={lakehouse_creds['user']} password={lakehouse_creds['password']} host=postgres port=5432' AS marts (TYPE postgres, SCHEMA 'marts');   
+    ATTACH 'dbname={lakehouse_creds['dbname']}' AS refined (TYPE postgres, SECRET postgres_secret, SCHEMA 'refined');
+    ATTACH 'dbname={lakehouse_creds['dbname']}' AS marts (TYPE postgres, SECRET postgres_secret, SCHEMA 'marts');   
+    ''')
+    
+def destruct() -> None:
+    duckdb.sql(f'''
+    USE memory;
+    DETACH refined;
+    DETACH marts;   
     ''')
     
 def query_retriever(client:Minio, bucket_name:str, queries:dict) -> list[str]:
@@ -27,10 +42,7 @@ def query_retriever(client:Minio, bucket_name:str, queries:dict) -> list[str]:
     :return: Return a set of query (create, clean, bad, inject)
     :rtype: list[str]
     '''
-    query_objects = [object_storage_retrieve(client, bucket_name, path) for path in queries]
+    query_objects = [object_storage_retrieve(client, bucket_name, queries[key]) for key in queries]
     if all(query_objects):
         return query_objects
     return None
-
-def executor(query:str) -> None:
-    duckdb.sql(query)
