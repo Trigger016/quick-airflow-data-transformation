@@ -41,6 +41,7 @@ x-airflow-common:
     AIRFLOW__SCHEDULER__STANDALONE_DAG_PROCESSOR: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
+    AIRFLOW__WEBSERVER__SHOW_TRIGGER_FORM_IF_NO_PARAMS: 'true'
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
   volumes:
@@ -71,7 +72,6 @@ services:
       - path: ./.env
     volumes:
       - minio_data:/data
-      - ./data:/raw
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -83,8 +83,9 @@ services:
       sleep 5;
       mc alias set minio ${MINIO_ENDPOINT} ${MINIO_ACCESS_ID} ${MINIO_ACCESS_SECRET};
       mc mb minio/data-landing/receipts;
-      mc mb minio/data-warehouse;
-      mc cp raw/* minio/data-landing/receipts;
+      mc mb minio/data-warehouse/sqlfiles/receipts;
+      mc cp raw/*.csv minio/data-landing/receipts;
+      mc cp raw/*.sql minio/data-warehouse/sqlfiles/receipts;
       exit 0;
       "
     env_file:
@@ -102,7 +103,7 @@ services:
       - path: .env
         required: true
     volumes:
-      - postgres-db-volume:/var/lib/postgresql/data
+      - ./postgres-db-volume:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
       interval: 10s
@@ -297,7 +298,7 @@ services:
         condition: service_completed_successfully
 
 volumes:
-  postgres-db-volume:
-    name: "postgres-db-volume"
+#   postgres-db-volume:
+#     name: "postgres-db-volume"
   minio_data:
     name: "minio_data"

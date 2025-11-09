@@ -1,2 +1,0 @@
-from minio import Minio
-
