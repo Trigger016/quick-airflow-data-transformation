@@ -4,3 +4,4 @@ data/
 .venv/
 .vscode/
 jupyter/
+airflow_data/
