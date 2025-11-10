@@ -298,7 +298,7 @@ services:
         condition: service_completed_successfully
 
 volumes:
-#   postgres-db-volume:
-#     name: "postgres-db-volume"
+  postgres-db-volume:
+    name: "postgres-db-volume"
   minio_data:
     name: "minio_data"
