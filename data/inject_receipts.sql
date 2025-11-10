@@ -1,3 +1,4 @@
+USE postgres_db;
 TRUNCATE TABLE marts.billing;
 
 WITH refined_data AS (

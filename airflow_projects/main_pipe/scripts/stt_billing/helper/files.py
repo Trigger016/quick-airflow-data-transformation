@@ -11,11 +11,11 @@ def exists_filename(mode:str, client:Minio, json_filepath:str, bucket_properties
     existing = jsonfile['exists']
     detected_filename = client.list_objects(
         bucket_name=bucket_properties['name'],
-        prefix=bucket_properties['target_prefix']
+        prefix=bucket_properties['csv_prefix']
     )
     working_list = [filename.object_name for filename in detected_filename 
                     if filename.object_name not in existing
-                    and filename.object_name.replace(bucket_properties['target_prefix'], '') != '']
+                    and filename.object_name.replace(bucket_properties['csv_prefix'], '') != '']
     
     if len(working_list) > 0:
         return working_list

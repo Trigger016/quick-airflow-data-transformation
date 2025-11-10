@@ -1,3 +1,5 @@
+USE postgres_db;
+
 WITH read_source as (
     SELECT 
         number,

@@ -5,7 +5,9 @@ from main_pipe.scripts.stt_billing.helper.files import object_storage_retrieve
 def init(bucket_creds:dict, lakehouse_creds:dict) -> None:
     duckdb.sql(f'''
     INSTALL httpfs;
+    INSTALL postgres;
     LOAD httpfs;    
+    LOAD postgres;
 
     CREATE OR REPLACE SECRET secret (
         TYPE s3,
@@ -26,23 +28,26 @@ def init(bucket_creds:dict, lakehouse_creds:dict) -> None:
     ''')
     
     duckdb.sql(f'''
-    ATTACH 'dbname={lakehouse_creds['dbname']}' AS refined (TYPE postgres, SECRET postgres_secret, SCHEMA 'refined');
-    ATTACH 'dbname={lakehouse_creds['dbname']}' AS marts (TYPE postgres, SECRET postgres_secret, SCHEMA 'marts');   
+    ATTACH 'dbname={lakehouse_creds['dbname']}' AS postgres_db (TYPE postgres, SECRET postgres_secret);
+    USE postgres_db;
     ''')
     
 def destruct() -> None:
     duckdb.sql(f'''
     USE memory;
-    DETACH refined;
-    DETACH marts;   
+    DETACH postgres_db;
     ''')
     
-def query_retriever(client:Minio, bucket_name:str, queries:dict) -> list[str]:
+def query_retriever(client:Minio, bucket_name:str, queries:dict, mode:str=None) -> list[str]:
     '''
     :return: Return a set of query (create, clean, bad, inject)
-    :rtype: list[str]
     '''
-    query_objects = [object_storage_retrieve(client, bucket_name, queries[key]) for key in queries]
-    if all(query_objects):
-        return query_objects
+    query_objects:list = [object_storage_retrieve(client, bucket_name, queries[key]) for key in queries]
+
+    queries = query_objects[1:3]
+    if mode:
+        queries = query_objects[::len(query_objects)-1]
+        
+    if all(queries):
+        return queries
     return None

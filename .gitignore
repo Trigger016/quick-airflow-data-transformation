@@ -4,3 +4,4 @@ __pycache__
 .vscode/
 jupyter/
 airflow_data/
+init.sh

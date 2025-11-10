@@ -5,8 +5,8 @@ load_dotenv('/opt/airflow/projects/main_pipe/scripts/stt_billing/.env')
 FILENAME_JSON_PATH= os.getenv('FILENAME_JSON_PATH')
 
 BUCKET_PROPERTIES = {
-    'name': os.getenv('BUCKET_NAME'),
-    'target_prefix': os.getenv('BUCKET_TARGET_FILEPATH')
+    'name': os.getenv('CSV_BUCKET_NAME'),
+    'csv_prefix': os.getenv('CSV_BUCKET_PATH')
 } 
 
 LAKEHOUSE_CREDS= {

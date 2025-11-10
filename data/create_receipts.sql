@@ -1,3 +1,4 @@
+USE postgres_db;
 CREATE TABLE IF NOT EXISTS refined.clean_receipts
 (
     number varchar,
