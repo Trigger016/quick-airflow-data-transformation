@@ -8,9 +8,9 @@ mkdir -p airflow_data/config airflow_data/logs airflow_data/plugins;
 ```
 - it is advisable to manually create different database from the one created by postgres (db `airflow`)
 ```sql
-CREATE DATABASE *database*;
-CREATE USER *username* WITH PASSWORD '*password*' ;
-GRANT ALL PRIVILEGES ON DATABASE *database* TO *username*;
+CREATE DATABASE <database>;
+CREATE USER <username> WITH PASSWORD '<password>' ;
+GRANT ALL PRIVILEGES ON DATABASE <database> TO <username>;
 ```
 
 ## Pipelines
