@@ -3,3 +3,5 @@ apache-airflow-providers-amazon
 python-dotenv
 minio
 duckdb
+odoo-py
+pymongo
