@@ -14,7 +14,7 @@
                 <page string="Session">
                     <group>
                         <field name='instructor'/>
-                    <field name='session_ids'/>
+                        <field name='session_ids'/>
                     </group>
                 </page>
             </xpath>
