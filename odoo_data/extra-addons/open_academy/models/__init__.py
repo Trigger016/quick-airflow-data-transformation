@@ -1,1 +1,3 @@
-from . import models
+from . import courses
+from . import sessions
+from . import partner

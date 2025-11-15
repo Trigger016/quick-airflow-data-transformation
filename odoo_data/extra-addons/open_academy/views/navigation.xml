@@ -1,0 +1,33 @@
+<odoo>
+    <menuitem
+        id="root"
+        name="Academy"
+        sequence="6"/>
+
+    <menuitem
+        id="course_menu" 
+        name="Course"
+        parent="root"
+        sequence="1"/>
+        
+    <menuitem
+        id="course_menu_edit"
+        name="List"
+        parent="course_menu"
+        action="action_course_menu"
+        sequence="1"/>
+
+    <menuitem
+        id="session_menu_edit"
+        name="Session"
+        parent="course_menu"
+        action="action_session_menu"
+        sequence="2"/>
+        
+    <menuitem
+        id="partner_menu_edit"
+        name="Partner"
+        parent="course_menu"
+        action="action_partner_menu"
+        sequence="2"/>
+</odoo>

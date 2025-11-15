@@ -1,0 +1,23 @@
+<odoo>
+    <record model="ir.actions.act_window" id="action_session_menu">
+        <field name="name">Sessions</field>
+        <field name="res_model">open.session</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="list_session_menu">
+        <field name="name">open.session.list</field>
+        <field name="model">open.session</field>
+        <field name="arch" type="xml">
+            <list string="List">
+                <field name='name'/>
+                <field name='start_date'/>
+                <field name='duration' widget="badge"/>
+                <field name='number_of_seat' widget="badge"/>
+                <field name='course_id' widget="badge"/>
+                <field name='instructor_id' widget="badge"/>
+                <field name='attendees_ids'/>
+            </list>
+        </field>
+    </record>
+</odoo>

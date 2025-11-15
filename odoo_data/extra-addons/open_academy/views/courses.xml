@@ -1,0 +1,66 @@
+<odoo>
+
+    <record model="ir.actions.act_window" id="action_course_menu">
+        <field name="name">Courses</field>
+        <field name="res_model">open.course</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record model="ir.ui.view" id="list_course_menu">
+        <field name="name">open.course.list</field>
+        <field name="model">open.course</field>
+        <field name="arch" type="xml">
+            <list string="List">
+                <field name='title'/>
+                <field name='description'/>
+                <field name='resonsible_id'/>
+                <field name='sessions_ids'/>
+                <field name='skill' widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="form_course_menu">
+        <field name="name">open.course.form</field>
+        <field name="model">open.course</field>
+        <field name="arch" type="xml">
+            <form string="Course Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="skill"/>
+                        </group>
+                        <group>
+                            <field name="resonsible_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                            </group>
+                        </page>
+                        <page string="Session">
+                            <group>
+                                <field name="sessions_ids"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="search_course_menu">
+        <field name="name">open.course.search</field>
+        <field name="model">open.course</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="title"/>
+                <field name="description"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
