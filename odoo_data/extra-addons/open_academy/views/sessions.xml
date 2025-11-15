@@ -15,7 +15,7 @@
                 <field name='duration' widget="badge"/>
                 <field name='number_of_seat' widget="badge"/>
                 <field name='course_id' widget="badge"/>
-                <field name='instructor_id' widget="badge"/>
+                <field name='instructor_id' widget="badge" domain="[('instructor', '=', True)]"/>
                 <field name='attendees_ids'/>
             </list>
         </field>
